@@ -40,6 +40,9 @@ public class NeoTunesManager {
                 case "6":
                     addAudioToPlaylist();
                     break;
+                case "7":
+                    deleteAudioInplaylist();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -74,6 +77,7 @@ public class NeoTunesManager {
                 4. Registrar podcast.
                 5. Crear lista de reproducción.
                 6. Añadir audio a una playlist.
+                7. Eliminar audio de una playlist.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -242,10 +246,13 @@ public class NeoTunesManager {
 
 
     }
+    /**
+     * This method solicits the information in order to add an audio into a playlist for a specific consumer.
+     */
 
     public static void addAudioToPlaylist (){
         if (controller.isThereConsumers() && controller.isThereAudios()){
-            System.out.println("Por favor escoje el usuario al cual deseas agregar una canción a una de sus playlist:");
+            System.out.println("Por favor escoje el usuario al cual deseas agregar un audio a una de sus playlist:");
             System.out.println(controller.getUserConsumerInfo());
             int consumerIndex = Integer.parseInt(scanner.nextLine());
             if (controller.isTherePlaylist(consumerIndex)){
@@ -269,6 +276,34 @@ public class NeoTunesManager {
 
     }
 
+    /**
+     * This method solicits the information in order to delete an audio from a playlist of a specific consumer.
+     */
+    public static void deleteAudioInplaylist(){
+        if (controller.isThereConsumers() && controller.isThereAudios()){
+            System.out.println("Por favor escoje el usuario al cual deseas borrar un audio en una de sus playlist:");
+            System.out.println(controller.getUserConsumerInfo());
+            int consumerIndex = Integer.parseInt(scanner.nextLine());
+            if (controller.isTherePlaylist(consumerIndex)){
+                System.out.println("Por favor escribe el número de  la playlist a la cual deseas borrar un audio.");
+                System.out.println(controller.getUserPlaylistInfo(consumerIndex));
+                int playlistIndex = Integer.parseInt(scanner.nextLine());
+
+                if (controller.isThereAudiosInPlaylist(consumerIndex,playlistIndex)){
+                    System.out.println("Por favor escribe el número que corresponde con el audio que deseas eliminar:");
+                    System.out.println(controller.concatenateAudioFromPlaylist(consumerIndex,playlistIndex));
+                    int audioPosition = Integer.parseInt(scanner.nextLine());
+
+                    if (controller.deleteAudio(audioPosition,consumerIndex,playlistIndex)){
+                        System.out.println("Audio eliminado.");
+                    }else System.out.println("No se pudo eliminar el audio.");
+                }else System.out.println("La playlist elegida no posee audios, por tanto no se puede realizar esta acción.");
 
 
+        }else System.out.println("El usuario escogido no posee playlist.");
+    }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
+    }
 }

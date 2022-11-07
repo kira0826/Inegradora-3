@@ -57,10 +57,32 @@ public class Premium extends UserConsumer {
         getPlaylists().get(playlistPosition).addAudio(audio);
         return true;
     }
+    /**This method identifies the playlist selected in order to delete the audio choose.
+     * @param audio Storages the audio position.
+     * @param playlistPosition Storages the playlist position that will be used to delete the audio selected.
+     * @return Returns true when the process was successfully done.
+     */
 
     @Override
-    public boolean deleteAudio(int playlistPosition, Audio audio) {
-        return false;
+    public boolean deleteAudio(int playlistPosition, int audio) {
+        return getPlaylists().get(playlistPosition).deleteAudio(audio);
+    }
+
+    /**This method is used to identify the playlist that will be used to generate the audios report.
+     * @param playlistIndex Storages the playlist index position.
+     * @return A String with the information of each audio stored in the playlist identified.
+     */
+    @Override
+    public String concatenateAudiosFromPlaylist(int playlistIndex) {
+        return getPlaylists().get(playlistIndex).displayAudios();
+    }
+    /**This method is used to identify the playlist that will be checked to verify if there is at least one audio.
+     * @param playlistIndex Storages the playlist index position.
+     * @return Returns true if there is at least one aduio in the selected playlist, otherwise, return false.
+     */
+    @Override
+    public boolean isThereAudiosInPlaylist(int playlistIndex) {
+        return getPlaylists().get(playlistIndex).isThereAudios();
     }
 
     public ArrayList<Playlist> getPlaylists() {

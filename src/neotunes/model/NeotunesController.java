@@ -173,6 +173,15 @@ public class NeotunesController {
     public boolean addAudio(int audioIndex, int userIndex, int playlistIndex){
         return ((UserConsumer)getUsers().get(userIndex)).addAudio(getAudios().get(audioIndex),playlistIndex );
     }
+    /**This method is used to identify the user selected in order to delete an audio to a playlist of the user identified.
+     * @param audioIndex Storages the index position of the audio that will be deleted.
+     * @param userIndex Storages the user index positin of the user consumer that has the playlist.
+     * @param playlistIndex Storages the index position of the user playlist that will be used to delete the audio.
+     * @return Return true if the audio was suscesfully deleted,  otherwise,  returns false.
+     */
+    public boolean deleteAudio(int audioIndex, int userIndex, int playlistIndex){
+        return ((UserConsumer)getUsers().get(userIndex)).deleteAudio(playlistIndex,audioIndex);
+    }
 
     // Isthere
 
@@ -210,6 +219,12 @@ public class NeotunesController {
     }
 
             // Audios
+    /**This method is used to identify the user that will be used to check if there is audios in a specific playlist of him.
+     * @return Returns true if exist at least one Audio in the selected playlist, otherwise, return false.
+     */
+    public boolean isThereAudiosInPlaylist(int userPosition, int playlistPosition){
+        return ((UserConsumer)getUsers().get(userPosition)).isThereAudiosInPlaylist(playlistPosition);
+    }
 
     /**This method verifies if there are Audios already registered.
      * @return Returns true if exist at least one Audio, otherwise, return false.
@@ -305,6 +320,15 @@ public class NeotunesController {
     public String getUserPlaylistInfo(int userConsumerPosition){
 
         return  ((UserConsumer)getUsers().get(userConsumerPosition)).concatenatePlaylistInfo();
+    }
+    /**This method is used to identify the user that will be used to generate the audios report.
+     * @param playlistIndex Storages the playlist index position.
+     * @param userIndex Storages the user consumer index position.
+     * @return A String with the information of each audio stored in the playlist identified.
+     */
+    public String concatenateAudioFromPlaylist(int userIndex, int playlistIndex){
+        return ((UserConsumer)getUsers().get(userIndex)).concatenateAudiosFromPlaylist(playlistIndex);
+
     }
 
     // Controller Methods

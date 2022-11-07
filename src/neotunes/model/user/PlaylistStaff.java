@@ -8,6 +8,9 @@ public interface PlaylistStaff {
     boolean hasPlaylist();
     String concatenatePlaylistInfo ();
     boolean addAudio(Audio audio, int playlistPosition);
-    boolean deleteAudio(int playlistPosition, Audio audio);
+    boolean deleteAudio(int playlistPosition, int audioPosition);
+    String concatenateAudiosFromPlaylist(int playlistIndex);
+
+    boolean isThereAudiosInPlaylist (int playlistIndex);
 
 }

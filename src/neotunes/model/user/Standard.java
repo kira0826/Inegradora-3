@@ -61,14 +61,27 @@ public class Standard extends UserConsumer implements Advertiseable{
      */
     @Override
     public boolean addAudio(Audio audio, int playlistPosition) {
-        getPlaylists()[playlistPosition].addAudio(audio);
-        return true;
+        return getPlaylists()[playlistPosition].addAudio(audio);
     }
-
+    /**This method identifies the playlist selected in order to delete the audio choose.
+     * @param audio Storages the audio position.
+     * @param playlistPosition Storages the playlist position that will be used to delete the audio selected.
+     * @return Returns true when the process was successfully done.
+     */
     @Override
-    public boolean deleteAudio(int playlistPosition, Audio audio) {
-        getPlaylists()[playlistPosition].deleteAudio(audio);
-        return true;
+    public boolean deleteAudio(int playlistPosition, int audio) {
+        return getPlaylists()[playlistPosition].deleteAudio(audio);
+    }
+    /**This method is used to identify the playlist that will be used to generate the audios report.
+     * @param playlistIndex Storages the playlist index position.
+     * @return A String with the information of each audio stored in the playlist identified.
+     */
+    @Override
+    public String concatenateAudiosFromPlaylist(int playlistIndex) {
+        return getPlaylists()[playlistIndex].displayAudios();
+    }
+    public boolean isThereAudiosInPlaylist(int playlistIndex) {
+        return getPlaylists()[playlistIndex].isThereAudios();
     }
 
 

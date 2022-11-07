@@ -14,6 +14,13 @@ public class Playlist {
 
     }
 
+    public void addAudio(Audio audio){
+        getAudios().add(audio);
+    }
+    public void deleteAudio(Audio audio){
+        getAudios().remove(audio);
+    }
+
     public ArrayList<Audio> getAudios() {
         return audios;
     }

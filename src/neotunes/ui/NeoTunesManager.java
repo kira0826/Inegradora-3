@@ -2,6 +2,7 @@ package neotunes.ui;
 
 import neotunes.model.*;
 
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class NeoTunesManager {
@@ -36,6 +37,9 @@ public class NeoTunesManager {
                 case "5":
                     createPlaylist();
                     break;
+                case "6":
+                    addAudioToPlaylist();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -69,6 +73,7 @@ public class NeoTunesManager {
                 3. Registrar canción.
                 4. Registrar podcast.
                 5. Crear lista de reproducción.
+                6. Añadir audio a una playlist.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -221,6 +226,9 @@ public class NeoTunesManager {
         }else System.out.println("No hay creadores de contenido, por tanto no se puede realizar esta acción.");
     }
 
+    /**
+     * This method solicits the information in order to create a playlist for a specific consumer.
+     */
     public static void createPlaylist(){
 
         if (controller.isThereConsumers()){
@@ -235,6 +243,31 @@ public class NeoTunesManager {
 
     }
 
+    public static void addAudioToPlaylist (){
+        if (controller.isThereConsumers() && controller.isThereAudios()){
+            System.out.println("Por favor escoje el usuario al cual deseas agregar una canción a una de sus playlist:");
+            System.out.println(controller.getUserConsumerInfo());
+            int consumerIndex = Integer.parseInt(scanner.nextLine());
+            if (controller.isTherePlaylist(consumerIndex)){
+                System.out.println("Por favor escribe el número de  la playlist a la cual deseas agregar el audio.");
+                System.out.println(controller.getUserPlaylistInfo(consumerIndex));
+                int playlistIndex = Integer.parseInt(scanner.nextLine());
+                System.out.println("Por favor escribe el número del audio que deseas agregar a la Playlist: ");
+                System.out.println(controller.concatenateAudiosInfo());
+                int audioIndex = Integer.parseInt(scanner.nextLine());
+
+                if (controller.addAudio(audioIndex,consumerIndex,playlistIndex)){
+                    System.out.println("Audio añadido.");
+                }else System.out.println("No se pudo agregar la canción.");
+
+            }else System.out.println("El usuario no tiene playlist registradas, por tanto, no se puede realizar esta acción.");
+        }else {
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
+
+
+    }
 
 
 

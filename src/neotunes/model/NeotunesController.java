@@ -12,8 +12,8 @@ public class NeotunesController {
     private ArrayList<User> users = new ArrayList<>();
 
 
-    //User registration
 
+    //User registration
     /**
      * This method verifies if the id given by the user is unique.
      *
@@ -42,6 +42,11 @@ public class NeotunesController {
         return true;
     }
 
+
+
+    //Registration
+
+        //Register Users
     /**
      * This method creates and save an Artist object in the program .
      *
@@ -108,6 +113,122 @@ public class NeotunesController {
         return "Usuario registrado";
     }
 
+    /**This method receives the necessary information in order to create a Song object.
+     * @param name Storages the name of the song.
+     * @param urlCover Storages the url of the cover photo.
+     * @param duration Storages the duration of the song.
+     * @param author Storages the position of the song author.
+     * @param price Storages the price of the song.
+     * @param album Storages the name of the album related with the song.
+     * @param genrePosition Storages the position of the genre related with the song.
+     * @return Return  a string indicating that the song was created.
+     */
+
+        //Register audios
+    public String registerSong (String name, String urlCover, String duration, int author, double price, String album, int genrePosition) {
+
+        Song song = new Song(name,urlCover,convertToSeconds(duration), (Artist) getUsers().get(author),price,album,Genre.values()[genrePosition]);
+        getAudios().add(song);
+        return "Canción registrada";
+    }
+
+    /**This method receives the necessary information in order to create a Podcast object.
+     * @param name Storages the name of the podcast.
+     * @param urlCover Storages the url of the cover photo.
+     * @param duration Storages the duration of the podcast.
+     * @param author Storages the position of the podcast author.
+     * @param description Storages the name of the album related with the podcast.
+     * @param categoryPosition Storages the position of the category related with the podcast.
+     * @return Return a string indicating that the podcast was created.
+     */
+    public String registerPodcast(String name, String urlCover, String duration, int author, String description, int categoryPosition){
+
+        Podcast podcast = new Podcast(name,urlCover,convertToSeconds(duration),(ContentCreator)getUsers().get(author),description,Category.values()[categoryPosition]);
+        getAudios().add(podcast);
+        return "Podcast Registrado";
+    }
+
+        //Playlist Staff
+
+    /**This method identifies the UserConsumer that will be uses to storages the new playlist that will be created.
+     * @param name Storages the playlist name
+     * @param userPosition Storages the user consumer postion
+     * @return A String indicating if the playlist was added or not.
+     */
+
+    public String createPlaylist(String name, int userPosition){
+
+        if (((UserConsumer) getUsers().get(userPosition)).addPlaylist(name)){
+            return "Playlist agregada";
+        }
+        return "No se pudo agregar la playlist";
+    }
+
+    /**This method is used to identify the user and audio selected in order to add an audio to a playlist of the user identified.
+     * @param audioIndex Storages the index position of the audio that will be added.
+     * @param userIndex Storages the user index positin of the user consumer that has the playlist.
+     * @param playlistIndex Storages the index position of the user playlist that will be used to save the audio.
+     * @return Return true if the audio was suscesfully added,  otherwise,  returns false.
+     */
+    public boolean addAudio(int audioIndex, int userIndex, int playlistIndex){
+        return ((UserConsumer)getUsers().get(userIndex)).addAudio(getAudios().get(audioIndex),playlistIndex );
+    }
+
+    // Isthere
+
+        // User
+
+    /**This method verifies if there are Artist already registered.
+     * @return Returns true if exist at least one Artist, otherwise, return false.
+     */
+    public boolean isThereArtist(){
+        for (int i = 0; i< getUsers().size();i++){
+            if (getUsers().get(i) instanceof Artist) return true;
+        }
+        return false;
+    }
+
+    /**This method verifies if there are ContentsCreators already registered.
+     * @return Returns true if exist at least one Artist, otherwise, return false.
+     */
+    public boolean isThereContentCreators(){
+        for (int i = 0; i< getUsers().size();i++){
+            if (getUsers().get(i) instanceof ContentCreator) return true;
+        }
+        return false;
+    }
+
+    /**This method verifies if there are UserConsumers already registered.
+     * @return Returns true if exist at least one UserConsumer, otherwise, return false.
+     */
+    public boolean isThereConsumers(){
+
+        for(int i = 0; i< users.size();i++){
+            if (users.get(i) instanceof UserConsumer) return true;
+        }
+        return false;
+    }
+
+            // Audios
+
+    /**This method verifies if there are Audios already registered.
+     * @return Returns true if exist at least one Audio, otherwise, return false.
+     */
+    public boolean isThereAudios(){
+        if (getAudios().size()>0) return true;
+        return false;
+    }
+    /**This method verifies if there are playlist already registered in one specific user consumer.
+     * @return Returns true if exist at least one playlist, otherwise, return false.
+     */
+
+    public boolean isTherePlaylist (int userConsumerPosition){
+        return ((UserConsumer)getUsers().get(userConsumerPosition)).hasPlaylist();
+    }
+
+
+    // Concatenate Information
+
     /**
      * This method gets the genres saved in the program.
      *
@@ -116,7 +237,6 @@ public class NeotunesController {
     public String getGenres() {
         return Genre.concatenateLiterals();
     }
-
 
     /**
      * This method concatenates the Artist users with their correspondent position.
@@ -145,26 +265,6 @@ public class NeotunesController {
         return message;
     }
 
-    /**This method verifies if there are Artist already registered.
-     * @return Returns true if exist at least one Artist, otherwise, return false.
-     */
-    public boolean isThereArtist(){
-        for (int i = 0; i< getUsers().size();i++){
-            if (getUsers().get(i) instanceof Artist) return true;
-        }
-        return false;
-    }
-
-    /**This method verifies if there are ContentsCreators already registered.
-     * @return Returns true if exist at least one Artist, otherwise, return false.
-     */
-    public boolean isThereContentCreators(){
-        for (int i = 0; i< getUsers().size();i++){
-            if (getUsers().get(i) instanceof ContentCreator) return true;
-        }
-        return false;
-    }
-
     /**
      * This method gets the categories saved in the program.
      * @return A String with the categories available.
@@ -173,37 +273,41 @@ public class NeotunesController {
         return Category.concatenateLiterals();
     }
 
-    /**This method receives the necessary information in order to create a Song object.
-     * @param name Storages the name of the song.
-     * @param urlCover Storages the url of the cover photo.
-     * @param duration Storages the duration of the song.
-     * @param author Storages the position of the song author.
-     * @param price Storages the price of the song.
-     * @param album Storages the name of the album related with the song.
-     * @param genrePosition Storages the position of the genre related with the song.
-     * @return Return  a string indicating that the song was created.
+    /**This method concatenates the Audios with their correspondent position.
+     * @return A string with the Audios names, duration and position.
      */
-    public String registerSong (String name, String urlCover, String duration, int author, double price, String album, int genrePosition) {
-
-        Song song = new Song(name,urlCover,convertToSeconds(duration), (Artist) getUsers().get(author),price,album,Genre.values()[genrePosition]);
-        getAudios().add(song);
-        return "Canción registrada";
+    public String concatenateAudiosInfo (){
+        String message = "Audios info: \n";
+        for (int i = 0; i < getAudios().size(); i++) {
+            message += i+".)" + getAudios().get(i).getName() +" - Duración : " + getAudios().get(i).durationFormat()+". \n";
+        }
+        return message;
     }
-    /**This method receives the necessary information in order to create a Podcast object.
-     * @param name Storages the name of the podcast.
-     * @param urlCover Storages the url of the cover photo.
-     * @param duration Storages the duration of the podcast.
-     * @param author Storages the position of the podcast author.
-     * @param description Storages the name of the album related with the podcast.
-     * @param categoryPosition Storages the position of the category related with the podcast.
-     * @return Return a string indicating that the podcast was created.
+
+    /**This method concatenates the UserConsumers with their correspondent position.
+     * @return A string with the UserConsumers names and position.
      */
-    public String registerPodcast(String name, String urlCover, String duration, int author, String description, int categoryPosition){
+    public String getUserConsumerInfo(){
 
-        Podcast podcast = new Podcast(name,urlCover,convertToSeconds(duration),(ContentCreator)getUsers().get(author),description,Category.values()[categoryPosition]);
-        getAudios().add(podcast);
-        return "Podcast Registrado";
+        String message = "Consumidores: " + "\n";
+
+        for (int i = 0; i < getUsers().size(); i++) {
+            if (getUsers().get(i) instanceof UserConsumer)
+                message += i + ") " + getUsers().get(i).getName() + "." + "\n";
+        }
+        return message;
     }
+
+    /**This method gets the name and positon of each playlist of a specific user.
+     * @param userConsumerPosition Storages the index position of the user selected.
+     * @return A string with the information of each playlist found.
+     */
+    public String getUserPlaylistInfo(int userConsumerPosition){
+
+        return  ((UserConsumer)getUsers().get(userConsumerPosition)).concatenatePlaylistInfo();
+    }
+
+    // Controller Methods
 
     /**This method converts a specific string format into seconds. Format : "2:12", "12:12".
      * @param duration Storages the duration in String format
@@ -221,48 +325,7 @@ public class NeotunesController {
     }
 
 
-    /**This method verifies if there are UserConsumers already registered.
-     * @return Returns true if exist at least one UserConsumer, otherwise, return false.
-     */
-    public boolean isThereConsumers(){
-
-        for(int i = 0; i< users.size();i++){
-            if (users.get(i) instanceof UserConsumer) return true;
-        }
-        return false;
-    }
-    /**This method concatenates the UserConsumers with their correspondent position.
-     * @return A string with the UserConsumers names and position.
-     */
-    public String getUserConsumerInfo(){
-
-        String message = "Consumidores: " + "\n";
-
-        for (int i = 0; i < getUsers().size(); i++) {
-            if (getUsers().get(i) instanceof UserConsumer)
-                message += i + ") " + getUsers().get(i).getName() + "." + "\n";
-        }
-        return message;
-    }
-
-    /**This method identifies the UserConsumer that will be uses to storages the new playlist that will be created.
-     * @param name Storages the playlist name
-     * @param userPosition Storages the user consumer postion
-     * @return A String indicating if the playlist was added or not.
-     */
-    public String createPlaylist(String name, int userPosition){
-
-        if (((UserConsumer) getUsers().get(userPosition)).addPlaylist(name)){
-            return "Playlist agregada";
-        }
-        return "No se pudo agregar la playlist";
-    }
-
-
-
-
-
-
+    // Getters and setters
 
     public ArrayList<Audio> getAudios() {
         return audios;

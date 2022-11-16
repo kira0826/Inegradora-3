@@ -39,6 +39,10 @@ public class Song extends Audio implements Sellable{
         return "Reproduciendo: " + this.getName() + " Duracion: " + this.durationFormat() + " - " + this.getAuthor().getName() +"\n";
     }
 
+    @Override
+    public void incrementNumSales() {
+        this.setNumSales(getNumSales()+1);
+    }
     public Genre getGenre() {
         return genre;
     }
@@ -70,6 +74,7 @@ public class Song extends Audio implements Sellable{
     public void setAlbum(String album) {
         this.album = album;
     }
+
 
 
 }

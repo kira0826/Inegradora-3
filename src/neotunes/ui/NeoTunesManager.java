@@ -47,6 +47,9 @@ public class NeoTunesManager {
                 case"9":
                     simulateReproduction();
                     break;
+                case "10":
+                    purchaseSellable();
+                    break;
 
                 case "0":
                     continueOnLoop = false;
@@ -85,6 +88,7 @@ public class NeoTunesManager {
                 7. Eliminar audio de una playlist.
                 8. Compartir una playlist.
                 9. Simular reproducción.
+                10. Comprar canción.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -339,7 +343,7 @@ public class NeoTunesManager {
         }
     }
     /**
-     * This method solicits the information in order to simulate the reproduction of an audio by a specific consumer.
+     * This method solicits the necessary information in order to simulate the reproduction of an audio by a specific consumer.
      */
     public static void simulateReproduction(){
 
@@ -358,5 +362,26 @@ public class NeoTunesManager {
             if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
         }
 
+    }
+    /**
+     * This method solicits the necessary information in order to purchase a Sellable object from a specific user consumer.
+     */
+    public static void purchaseSellable(){
+        if (controller.isThereConsumers() && controller.isThereSellables()){
+            System.out.println("Por favor escoje el usuario que desea simular la reproducción de un audio");
+            System.out.println(controller.getUserConsumerInfo());
+            int userIndex = Integer.parseInt(scanner.nextLine());
+            System.out.println("Por favor escribe el número del vendible que deseas comprar.");
+            System.out.println(controller.concatenateSellableInfo());
+            int sellableIndex = Integer.parseInt(scanner.nextLine());
+
+            if (controller.purchaseSellable(userIndex,sellableIndex)){
+                System.out.println("Compra exitosa.");
+            }else System.out.println("No se pudo realizar la compra");
+
+        }else{
+            if (!controller.isThereSellables()) System.out.println("No hay vendibles registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
     }
 }

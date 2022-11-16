@@ -16,6 +16,18 @@ public class Premium extends UserConsumer {
 
     }
 
+    /**This method associates the sellable object to the user purchase list, and increment the number of sales of the Sellable object.
+     * @param sellable Storages the Sellable object that will be bought.
+     * @return Returns true when the purchase was done, otherwise, returns false.
+     */
+    public boolean purchaseSellable(Sellable sellable){
+        sellable.incrementNumSales();
+        LocalDate localDate  = LocalDate.now();
+        Purchase purchase = new Purchase(localDate,sellable);
+        getPurchases().add(purchase);
+        return true;
+    }
+
     /**This method associate a playlist to this user.
      * @param name Storages the playlist name
      * @return Return true if the playlist was created.

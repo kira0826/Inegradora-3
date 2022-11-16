@@ -202,6 +202,16 @@ public class NeotunesController {
         message += ((UserConsumer)getUsers().get(userPosition)).reproduceAudio(getAudios().get(audioPosition));
         return message;
     }
+    /**This method is used to identify the user and the sellable selected in order make a purchase.
+     * @param sellablePosition Storages the index position of the Sellable that will be sold.
+     * @param userPosition Storages the user index positin of the user consumer that want to purchase a Sellable.
+     * @return Returns true when the purchase was done, otherwise, returns false.
+     */
+    public boolean purchaseSellable(int userPosition, int sellablePosition){
+
+        return (((UserConsumer)getUsers().get(userPosition)).purchaseSellable((Sellable) getAudios().get(sellablePosition)));
+
+    }
 
     // Isthere
 
@@ -253,6 +263,16 @@ public class NeotunesController {
         if (getAudios().size()>0) return true;
         return false;
     }
+    /**This method verifies if there are Sellables objects already registered.
+     * @return Returns true if exist at least one Sellable object, otherwise, return false.
+     */
+    public boolean isThereSellables(){
+        for(int i = 0; i< getAudios().size();i++){
+            if (getAudios().get(i) instanceof Sellable) return true;
+
+        }
+        return false;
+    }
     /**This method verifies if there are playlist already registered in one specific user consumer.
      * @return Returns true if exist at least one playlist, otherwise, return false.
      */
@@ -263,6 +283,16 @@ public class NeotunesController {
 
 
     // Concatenate Information
+    /**This method concatenates the Sellables info with their correspondent position.
+     * @return A string with the Sellables names, duration and position.rep
+     */
+    public String concatenateSellableInfo (){
+        String message = "Vendibles info: \n";
+        for (int i = 0; i < getAudios().size(); i++) {
+            if (getAudios().get(i) instanceof Sellable) message += i+".)" + getAudios().get(i).getName() +" - Duración : " + getAudios().get(i).durationFormat()+". \n";
+        }
+        return message;
+    }
 
     /**
      * This method gets the genres saved in the program.

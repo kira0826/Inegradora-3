@@ -1,6 +1,7 @@
 package neotunes.model.user;
 
 import neotunes.model.audio.Audio;
+import neotunes.model.audio.Sellable;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public abstract class UserConsumer extends User implements Reproduce, PlaylistSt
         super(name, id, dateOfLinking);
     }
 
-
+    public abstract boolean purchaseSellable(Sellable sellable);
     public int getReproducedSongs() {
         return reproducedSongs;
     }

@@ -12,6 +12,8 @@ public class Premium extends UserConsumer {
 
     public Premium(String name, String id, LocalDate dateOfLinking) {
         super(name, id, dateOfLinking);
+        this.reproducedAudios = new ArrayList<>();
+
     }
 
     /**This method associate a playlist to this user.
@@ -94,6 +96,42 @@ public class Premium extends UserConsumer {
         return getPlaylists().get(playlistIndex).sharePlaylist();
     }
 
+    //Reproduce
+
+    /**This method increment the audio stats and update the consumer listened audios.
+     * @param audio Storages the audio that will be used to compared and increment the correspondent stats.
+     * @return A string that simulates the reproduction of an audio.
+     */
+    @Override
+    public String reproduceAudio(Audio audio) {
+        String message = "";
+
+        if (wasReproduced(audio)){
+            for (int i = 0; i < getReproducedAudios().size(); i++) {
+                if (getReproducedAudios().get(i).equals(audio)) {
+                    getReproducedAudios().get(i).setNumReproduction(getReproducedAudios().get(i).getNumReproduction()+1);
+                }
+            }
+        }else{
+            Audio audio1 = audio.copy();
+            audio1.setNumReproduction(1);
+            audio1.setId(audio.getId());
+            getReproducedAudios().add(audio1);
+        }
+        return message;
+    }
+    /**Verify if a specific audio was reproduced before.
+     * @param audio Storages the audio that will be used to verify.
+     * @return Returns true if was reproduced before, otherwise,  returns false
+     */
+    @Override
+    public boolean wasReproduced(Audio audio) {
+        for (int i = 0; i < getReproducedAudios().size(); i++) {
+            if (getReproducedAudios().get(i).equals(audio))return true;
+        }
+        return false;
+    }
+
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
     }
@@ -109,4 +147,6 @@ public class Premium extends UserConsumer {
     public void setPurchases(ArrayList<Purchase> purchases) {
         this.purchases = purchases;
     }
+
+
 }

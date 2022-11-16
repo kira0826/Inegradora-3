@@ -17,6 +17,36 @@ public class Song extends Audio implements Sellable{
         this.genre = genre;
     }
 
+    /**This method generates a copy of a Song object.
+     * @return Returns a new song object with the same attributes of the selected song.
+     */
+    @Override
+    public Audio copy() {
+        return new Song(getName(), getUrlCover(),getDuration(),getAuthor(),getPrice(),
+                getAlbum(),getGenre());
+    }
+
+    /**This method simulate a Song reproduction,  and also, increment the number of reproduction and time of reproduction of the author.
+     * @return  A String with the information of the Song reproduced.
+     */
+
+    @Override
+    public String reproduce() {
+
+        this.getAuthor().setNumReproduction(getAuthor().getNumReproduction() + 1);
+        this.getAuthor().setTimeReproduced(getAuthor().getTimeReproduced()+this.getDuration());
+        this.setNumReproduction(getNumReproduction() +1);
+        return "Reproduciendo: " + this.getName() + " Duracion: " + this.durationFormat() + " - " + this.getAuthor().getName() +"\n";
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -40,4 +70,6 @@ public class Song extends Audio implements Sellable{
     public void setAlbum(String album) {
         this.album = album;
     }
+
+
 }

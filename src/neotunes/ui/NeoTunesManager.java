@@ -44,6 +44,10 @@ public class NeoTunesManager {
                 case "8":
                     sharePlaylist();
                     break;
+                case"9":
+                    simulateReproduction();
+                    break;
+
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -80,6 +84,7 @@ public class NeoTunesManager {
                 6. Añadir audio a una playlist.
                 7. Eliminar audio de una playlist.
                 8. Compartir una playlist.
+                9. Simular reproducción.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -308,7 +313,9 @@ public class NeoTunesManager {
             if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
         }
     }
-
+    /**
+     * This method solicits the information in order to share a playlist from a specific consumer.
+     */
     public static void sharePlaylist(){
         if (controller.isThereConsumers() && controller.isThereAudios()){
             System.out.println("Por favor escoje el usuario que desea compartir una playlist:");
@@ -330,5 +337,26 @@ public class NeoTunesManager {
             if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
             if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
         }
+    }
+    /**
+     * This method solicits the information in order to simulate the reproduction of an audio by a specific consumer.
+     */
+    public static void simulateReproduction(){
+
+        if (controller.isThereConsumers() && controller.isThereAudios()){
+            System.out.println("Por favor escoje el usuario que desea simular la reproducción de un audio");
+            System.out.println(controller.getUserConsumerInfo());
+            int userIndex = Integer.parseInt(scanner.nextLine());
+            System.out.println("Por favor escribe el número del audio que deseas reproducir.");
+            System.out.println(controller.concatenateAudiosInfo());
+            int audioIndex = Integer.parseInt(scanner.nextLine());
+
+            System.out.println(controller.reproduceAudio(userIndex,audioIndex));
+
+        }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
+
     }
 }

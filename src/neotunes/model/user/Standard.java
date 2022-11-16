@@ -4,6 +4,8 @@ import neotunes.model.audio.*;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class Standard extends UserConsumer implements Advertiseable{
 
@@ -12,6 +14,8 @@ public class Standard extends UserConsumer implements Advertiseable{
 
     public Standard(String name, String id, LocalDate dateOfLinking) {
         super(name, id, dateOfLinking);
+        this.reproducedSongs = 0;
+        this.reproducedAudios = new ArrayList<>();
     }
 
     /**This method associate a playlist to the user selected, it's worth to say that, it firstly verifies if there is space to add
@@ -80,6 +84,9 @@ public class Standard extends UserConsumer implements Advertiseable{
     public String concatenateAudiosFromPlaylist(int playlistIndex) {
         return getPlaylists()[playlistIndex].displayAudios();
     }
+    /**This method checks if there is at least one audio associate to the selected playlist.
+     * @return Returns true if there is at least one audio, otherwise, return false.
+     */
     public boolean isThereAudiosInPlaylist(int playlistIndex) {
         return getPlaylists()[playlistIndex].isThereAudios();
     }
@@ -93,6 +100,58 @@ public class Standard extends UserConsumer implements Advertiseable{
     public String sharePlaylist(int playlistIndex) {
         return getPlaylists()[playlistIndex].sharePlaylist();
     }
+
+    // Reproduce
+
+    /**This method select randomly an advertisement that will be displayed.
+     * @return A String with the information of the advertisement.
+     */
+    @Override
+    public String selectAdvertisement() {
+        Random random = new Random();
+        return Advertiseable.advertisements.get(random.nextInt(advertisements.size()));
+    }
+    /**This method increment the audio stats and update the consumer listened audios.
+     * @param audio Storages the audio that will be used to compared and increment the correspondent stats.
+     * @return A string that simulates the reproduction of an audio.
+     */
+    @Override
+    public String reproduceAudio(Audio audio) {
+        if (audio instanceof Song) this.setReproducedSongs(this.getReproducedSongs()+1);
+
+        String message = "";
+        if (this.getReproducedSongs() ==2) {
+            message += "Anuncio: " + selectAdvertisement() + "\n";
+            this.setReproducedSongs(0);
+        }
+
+        if (wasReproduced(audio)){
+            for (int i = 0; i < getReproducedAudios().size(); i++) {
+                if (getReproducedAudios().get(i).equals(audio)) {
+                    getReproducedAudios().get(i).setNumReproduction(getReproducedAudios().get(i).getNumReproduction()+1);
+                }
+            }
+        }else{
+            Audio audio1 = audio.copy();
+            audio1.setNumReproduction(1);
+            audio1.setId(audio.getId());
+            getReproducedAudios().add(audio1);
+        }
+        return message;
+    }
+
+    /**Verify if a specific audio was reproduced before.
+     * @param audio Storages the audio that will be used to verify.
+     * @return Returns true if was reproduced before, otherwise,  returns false
+     */
+    public boolean wasReproduced(Audio audio){
+        for (int i = 0; i < getReproducedAudios().size(); i++) {
+            if (getReproducedAudios().get(i).equals(audio))return true;
+        }
+        return false;
+    }
+
+
 
 
     public Playlist[] getPlaylists() {
@@ -110,4 +169,6 @@ public class Standard extends UserConsumer implements Advertiseable{
     public void setPurchases(Purchase[] purchases) {
         this.purchases = purchases;
     }
+
+
 }

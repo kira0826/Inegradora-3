@@ -191,6 +191,17 @@ public class NeotunesController {
     public boolean deleteAudio(int audioIndex, int userIndex, int playlistIndex){
         return ((UserConsumer)getUsers().get(userIndex)).deleteAudio(playlistIndex,audioIndex);
     }
+    /**This method is used to identify the user and audio selected in order reproduce an audio.
+     * @param audioPosition Storages the index position of the audio that will be reproduced.
+     * @param userPosition Storages the user index positin of the user consumer that want to reproduce an audio.
+     * @return Returns a string simulating the reproduction of an audio.
+     */
+    public String reproduceAudio(int userPosition, int audioPosition){
+        String message = "";
+        message += getAudios().get(audioPosition).reproduce();
+        message += ((UserConsumer)getUsers().get(userPosition)).reproduceAudio(getAudios().get(audioPosition));
+        return message;
+    }
 
     // Isthere
 

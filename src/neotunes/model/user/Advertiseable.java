@@ -9,4 +9,6 @@ public interface Advertiseable {
             (Arrays.asList("Nike - Just Do It.",
                     "Coca-Cola - Open Happiness.",
             "M&Ms - Melts in Your Mouth, Not in Your Hands"));
+
+     String selectAdvertisement();
 }

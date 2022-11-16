@@ -1,8 +1,6 @@
 package neotunes.ui;
 
 import neotunes.model.*;
-
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class NeoTunesManager {
@@ -43,6 +41,9 @@ public class NeoTunesManager {
                 case "7":
                     deleteAudioInplaylist();
                     break;
+                case "8":
+                    sharePlaylist();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -78,6 +79,7 @@ public class NeoTunesManager {
                 5. Crear lista de reproducción.
                 6. Añadir audio a una playlist.
                 7. Eliminar audio de una playlist.
+                8. Compartir una playlist.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -89,7 +91,7 @@ public class NeoTunesManager {
      */
     public static void registerUserProducer(){
 
-        System.out.println("Dame el nickname:");
+        System.out.println("Dame el nickname: ");
         String nickname = scanner.nextLine();
         if (!controller.isNicknameUnique(nickname)){
             for (;!controller.isNicknameUnique(nickname);){
@@ -302,6 +304,29 @@ public class NeoTunesManager {
 
         }else System.out.println("El usuario escogido no posee playlist.");
     }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
+    }
+
+    public static void sharePlaylist(){
+        if (controller.isThereConsumers() && controller.isThereAudios()){
+            System.out.println("Por favor escoje el usuario que desea compartir una playlist:");
+            System.out.println(controller.getUserConsumerInfo());
+            int userIndex = Integer.parseInt(scanner.nextLine());
+            if (controller.isTherePlaylist(userIndex)){
+                System.out.println("Por favor escribe el número de  la playlist que deseas compartir.");
+                System.out.println(controller.getUserPlaylistInfo(userIndex));
+                int playlistIndex = Integer.parseInt(scanner.nextLine());
+
+                if (controller.isThereAudiosInPlaylist(userIndex,playlistIndex)){
+
+                    System.out.println("Share code: " + controller.sharePlaylist(userIndex,playlistIndex));
+                }else System.out.println("La playlist elegida no posee audios, por tanto no se puede realizar esta acción.");
+
+
+            }else System.out.println("El usuario escogido no posee playlist.");
+        }else{
             if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
             if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
         }

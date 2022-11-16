@@ -85,6 +85,15 @@ public class Premium extends UserConsumer {
         return getPlaylists().get(playlistIndex).isThereAudios();
     }
 
+    /**This method is used to identify the playlist that will be shared.
+     * @param playlistIndex Storages the playlist index position.
+     * @return The code that will be used to share the playlist.
+     */
+    @Override
+    public String sharePlaylist(int playlistIndex) {
+        return getPlaylists().get(playlistIndex).sharePlaylist();
+    }
+
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
     }

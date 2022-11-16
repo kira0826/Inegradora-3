@@ -2,7 +2,6 @@ package neotunes.model;
 
 import neotunes.model.audio.*;
 import neotunes.model.user.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -162,6 +161,16 @@ public class NeotunesController {
             return "Playlist agregada";
         }
         return "No se pudo agregar la playlist";
+    }
+
+    /**
+     * This method is used to identify the user that want to share a playlist.
+     * @param userIndex Storages the user index position.
+     * @param playlist Storages the playlist index position
+     * @return The code that will be used to share the playlist.
+     */
+    public String sharePlaylist (int userIndex, int playlist){
+        return ((UserConsumer)getUsers().get(userIndex)).sharePlaylist(playlist);
     }
 
     /**This method is used to identify the user and audio selected in order to add an audio to a playlist of the user identified.

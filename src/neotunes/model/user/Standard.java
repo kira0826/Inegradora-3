@@ -85,6 +85,16 @@ public class Standard extends UserConsumer implements Advertiseable{
     }
 
 
+    /**This method is used to identify the playlist that will be shared.
+     * @param playlistIndex Storages the playlist index position.
+     * @return The code that will be used to share the playlist.
+     */
+    @Override
+    public String sharePlaylist(int playlistIndex) {
+        return getPlaylists()[playlistIndex].sharePlaylist();
+    }
+
+
     public Playlist[] getPlaylists() {
         return playlists;
     }

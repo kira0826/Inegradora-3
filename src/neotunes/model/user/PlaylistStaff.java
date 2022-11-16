@@ -12,5 +12,6 @@ public interface PlaylistStaff {
     String concatenateAudiosFromPlaylist(int playlistIndex);
 
     boolean isThereAudiosInPlaylist (int playlistIndex);
+    String sharePlaylist (int playlistIndex);
 
 }

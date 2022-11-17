@@ -11,8 +11,53 @@ public class NeotunesController {
     private ArrayList<User> users = new ArrayList<>();
 
     //Stats
+    /**This method identifies the UserConsumer that want to know his favorite song genre.
+     * @param userPosition Storages the user consumer position.
+     *  @return A String with the information of the favorite song genre of a specific user.
+     */
+    public String favoriteUserSongGenre(int userPosition){
+        return ((UserConsumer)getUsers().get(userPosition)).favoriteUserSongGenre();
+    }
+    /**This method identifies the favorite song genre of the global program.
+     * @return If there is at least one song reproduced, returns a string with the information of the favorite genre, otherwise
+     * return a string indicating that there are not songs.
+     */
+    public String favoriteGlobalSongGenre(){
+        if (isThereSong()){
+            int counter [] = new int[Genre.values().length];
+            //Fill process
+            for (int i = 0; i < counter.length; i++) {
+                counter[i] = 0;
+            }
+            // Count process
+            for (int  i  =0 ; i < Genre.values().length;i++){
+                for (int j = 0; j< getAudios().size(); j++) {
+                    if (getAudios().get(j) instanceof Song){
+                        if (((Song) getAudios().get(j)).getGenre().equals(Genre.values()[i])){
+                            counter[i] = counter[i] + getAudios().get(j).getNumReproduction();
+                        }
+                    }
+                }
+            }
+            // Favorite process
+            int favorite= counter[0] , position = 0;
 
-    /**This method identify the top-selling song
+            for (int i = 0; i < counter.length; i++) {
+                if (favorite < counter[i]){
+                    position = i;
+                    favorite = counter[i];
+                }
+            }
+            // Message process
+            String message = "Género favorito:  " + Genre.values()[position]
+                    + " | Número de reproducciones: " + counter[position];
+
+            return message;
+        }
+        return "No hay canciones reproducidas.";
+    }
+
+    /**This method identifies the top-selling song
      * @return A String with the information of the top-selling song.
      */
     public String topSellingSong(){
@@ -31,7 +76,6 @@ public class NeotunesController {
         return "Canción más vendida:  " + temporal.getName() + " | Ventas: " + temporal.getNumSales() + " | Ingresos: "
                 + temporal.getNumSales()* temporal.getPrice();
     }
-
 
     /**This method counts the quantity of songs reproductions.
      * @return An intenger with the quantity of songs reproductions.
@@ -210,7 +254,7 @@ public class NeotunesController {
      * This method identifies the UserConsumer that will be uses to storages the new playlist that will be created.
      *
      * @param name         Storages the playlist name
-     * @param userPosition Storages the user consumer postion
+     * @param userPosition Storages the user consumer position
      * @return A String indicating if the playlist was added or not.
      */
 

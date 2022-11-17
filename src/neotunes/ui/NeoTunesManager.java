@@ -56,6 +56,9 @@ public class NeoTunesManager {
                 case "12":
                     topSellingSong();
                     break;
+                case "13":
+                    favoriteSongGenre();
+                    break;
 
                 case "0":
                     continueOnLoop = false;
@@ -97,6 +100,7 @@ public class NeoTunesManager {
                 10. Comprar canción.
                 11. Calcular el total de reproducciones de un tipo de audio. 
                 12. Canción más vendida
+                13. Género favorito de canciones.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -421,11 +425,43 @@ public class NeoTunesManager {
         }
     }
 
+    /**
+     * This method is used to call the topSellingSong controller method if there are audios and songs.
+     */
     public static void topSellingSong(){
 
         if (controller.isThereAudios() && controller.isThereSong()){
 
             System.out.println(controller.topSellingSong());
+        }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereSong()) System.out.println("No hay canciones registradas, por tanto no se puede realizar esta acción.");
+        }
+    }
+
+    /**
+     * This method is used to identify which operation must the system do: identify the favorite song genre of the program,
+     * or the favorite song genre of a specific user.
+     */
+    public static void favoriteSongGenre(){
+        if (controller.isThereAudios() && controller.isThereSong()){
+
+            System.out.println("Escriba 1 si desea saber el género de canción  favorito  de un usuario en específico, escriba 2 si desea saber el de todo el programa. ");
+            String selection = scanner.nextLine();
+
+            switch (selection){
+                case "1":
+                    if (controller.isThereConsumers()) {
+                        System.out.println("Por favor escoje el usuario al cual deseas saber su género favorito de canciones.");
+                        System.out.println(controller.getUserConsumerInfo());
+                        int userPosition = Integer.parseInt(scanner.nextLine());
+                        System.out.println(controller.favoriteUserSongGenre(userPosition));
+                    }else System.out.println("No hay usuarios registrados por tanto no se puede realizar esta operación.");
+                    break;
+                case "2":
+                    System.out.println(controller.favoriteGlobalSongGenre());
+                    break;
+            }
         }else{
             if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
             if (!controller.isThereSong()) System.out.println("No hay canciones registradas, por tanto no se puede realizar esta acción.");

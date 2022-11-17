@@ -11,6 +11,53 @@ public class NeotunesController {
     private ArrayList<User> users = new ArrayList<>();
 
     //Stats
+    /**This method identifies the favorite podcast category of the global program.
+     * @return If there is at least one podcast reproduced, returns a string with the information of the favorite category, otherwise
+     * return a string indicating that there are not songs.
+     */
+    public String favoriteGlobalPodcastCategory(){
+        if (isTherePodcast()){
+            int counter [] = new int[Category.values().length];
+            //Fill process
+            for (int i = 0; i < counter.length; i++) {
+                counter[i] = 0;
+            }
+            // Count process
+            for (int  i  =0 ; i < Category.values().length;i++){
+                for (int j = 0; j< getAudios().size(); j++) {
+                    if (getAudios().get(j) instanceof Podcast){
+                        if (((Podcast) getAudios().get(j)).getCategory().equals(Category.values()[i])){
+                            counter[i] = counter[i] + getAudios().get(j).getNumReproduction();
+                        }
+                    }
+                }
+            }
+            // Favorite process
+            int favorite= counter[0] , position = 0;
+
+            for (int i = 0; i < counter.length; i++) {
+                if (favorite < counter[i]){
+                    position = i;
+                    favorite = counter[i];
+                }
+            }
+            // Message process
+            String message = "Categoría favorita:  " + Category.values()[position]
+                    + " | Número de reproducciones: " + counter[position];
+
+            return message;
+        }
+        return "No hay podcast.";
+    }
+
+
+    /**This method identifies the UserConsumer that want to know his favorite podcast category.
+     * @param userPosition Storages the user consumer position.
+     *  @return A String with the information of the favorite podcast category of a specific user.
+     */
+    public String favoriteUserPodcastCategory(int userPosition){
+        return ((UserConsumer)getUsers().get(userPosition)).favoriteUserPodcastCategory();
+    }
     /**This method identifies the UserConsumer that want to know his favorite song genre.
      * @param userPosition Storages the user consumer position.
      *  @return A String with the information of the favorite song genre of a specific user.
@@ -54,7 +101,7 @@ public class NeotunesController {
 
             return message;
         }
-        return "No hay canciones reproducidas.";
+        return "No hay canciones.";
     }
 
     /**This method identifies the top-selling song

@@ -8,6 +8,44 @@ public abstract class UserConsumer extends User implements Reproduce, PlaylistSt
 
     int reproducedSongs;
     ArrayList<Audio> reproducedAudios;
+    /**This method identifies the favorite podcast category of a specific user.
+     * @return If there is at least one podcast reproduced, returns a string with the information of the favorite category, otherwise
+     * return a string indicating that there are not podcasts.
+     */
+    public String favoriteUserPodcastCategory(){
+        if (this.isTherePodcastReproduced()){
+            int counter [] = new int[Category.values().length];
+            //Fill process
+            for (int i = 0; i < counter.length; i++) {
+                counter[i] = 0;
+            }
+            // Count process
+            for (int  i  =0 ; i < Category.values().length;i++){
+                for (int j = 0; j< getReproducedAudios().size(); j++) {
+                    if (getReproducedAudios().get(j) instanceof Podcast){
+                        if (((Podcast) getReproducedAudios().get(j)).getCategory().equals(Category.values()[i])){
+                            counter[i] = counter[i] + getReproducedAudios().get(j).getNumReproduction();
+                        }
+                    }
+                }
+            }
+            // Favorite process
+            int favorite= counter[0] , position = 0;
+
+            for (int i = 0; i < counter.length; i++) {
+                if (favorite < counter[i]){
+                    position = i;
+                    favorite = counter[i];
+                }
+            }
+            // Message process
+            String message = "Categoría favorita:  " + Category.values()[position]
+                    + " | Número de reproducciones: " + counter[position];
+
+            return message;
+        }
+        return "No hay podcast reproducidos.";
+    }
 
     /**This method identifies the favorite song genre of a specific user.
      * @return If there is at least one song reproduced, returns a string with the information of the favorite genre, otherwise
@@ -54,7 +92,7 @@ public abstract class UserConsumer extends User implements Reproduce, PlaylistSt
      */
     public boolean isTherePodcastReproduced(){
         for (int i = 0; i < getReproducedAudios().size(); i++) {
-            if (getReproducedAudios().get(i) instanceof Song) return true;
+            if (getReproducedAudios().get(i) instanceof Podcast) return true;
         }
         return false;
     }

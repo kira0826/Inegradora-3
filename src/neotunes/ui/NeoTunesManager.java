@@ -59,7 +59,9 @@ public class NeoTunesManager {
                 case "13":
                     favoriteSongGenre();
                     break;
-
+                case"14":
+                    favoritePodcastCategory();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -101,6 +103,7 @@ public class NeoTunesManager {
                 11. Calcular el total de reproducciones de un tipo de audio. 
                 12. Canción más vendida
                 13. Género favorito de canciones.
+                14. Categoría favorita de podcast.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -465,6 +468,34 @@ public class NeoTunesManager {
         }else{
             if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
             if (!controller.isThereSong()) System.out.println("No hay canciones registradas, por tanto no se puede realizar esta acción.");
+        }
+    }
+    /**
+     * This method is used to identify which operation must the system do: identify the favorite podcast category of the program,
+     * or the favorite podcast category of a specific user.
+     */
+    public static void favoritePodcastCategory(){
+        if (controller.isThereAudios() && controller.isTherePodcast()){
+
+            System.out.println("Escriba 1 si desea saber la categoría de un podcast favorita  de un usuario en específico, escriba 2 si desea saber la de todo el programa. ");
+            String selection = scanner.nextLine();
+
+            switch (selection){
+                case "1":
+                    if (controller.isThereConsumers()) {
+                        System.out.println("Por favor escoje el usuario al cual deseas saber su categoría favorita de podcast.");
+                        System.out.println(controller.getUserConsumerInfo());
+                        int userPosition = Integer.parseInt(scanner.nextLine());
+                        System.out.println(controller.favoriteUserPodcastCategory(userPosition));
+                    }else System.out.println("No hay usuarios registrados por tanto no se puede realizar esta operación.");
+                    break;
+                case "2":
+                    System.out.println(controller.favoriteGlobalPodcastCategory());
+                    break;
+            }
+        }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isTherePodcast()) System.out.println("No hay podcasts registrados, por tanto no se puede realizar esta acción.");
         }
     }
 }

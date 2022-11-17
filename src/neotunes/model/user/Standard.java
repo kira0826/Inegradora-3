@@ -118,8 +118,10 @@ public class Standard extends UserConsumer implements Advertiseable{
     @Override
     public String reproduceAudio(Audio audio) {
         if (audio instanceof Song) this.setReproducedSongs(this.getReproducedSongs()+1);
-
         String message = "";
+
+        if(audio instanceof  Podcast) message += "Anuncio: " + selectAdvertisement() + "\n";
+
         if (this.getReproducedSongs() ==2) {
             message += "Anuncio: " + selectAdvertisement() + "\n";
             this.setReproducedSongs(0);

@@ -50,6 +50,12 @@ public class NeoTunesManager {
                 case "10":
                     purchaseSellable();
                     break;
+                case "11":
+                    totalReproductions();
+                    break;
+                case "12":
+                    topSellingSong();
+                    break;
 
                 case "0":
                     continueOnLoop = false;
@@ -89,6 +95,8 @@ public class NeoTunesManager {
                 8. Compartir una playlist.
                 9. Simular reproducción.
                 10. Comprar canción.
+                11. Calcular el total de reproducciones de un tipo de audio. 
+                12. Canción más vendida
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -382,6 +390,45 @@ public class NeoTunesManager {
         }else{
             if (!controller.isThereSellables()) System.out.println("No hay vendibles registrados por tanto no se puede realizar esta acción.");
             if (!controller.isThereConsumers()) System.out.println("No hay consumidores registrados, por tanto no se puede realizar esta acción.");
+        }
+    }
+
+    /**
+     * This method asks for the audio type that will be used to count the number of reproductions.
+     */
+    public static void totalReproductions(){
+        if (controller.isThereAudios()){
+            System.out.println("Escribe 1 si deseas contabilizar las reproducciones de las canciones,  escribe 2 si es sobre los podcast");
+            String selection = scanner.nextLine();
+            switch (selection){
+
+                case "1":
+                    if (controller.isThereSong()){
+                        System.out.println(controller.songsReproductions());
+                    }else System.out.println("No hay canciones registradas, por tanto no se puede realizar esta acción.");
+                    break;
+                case "2":
+                    if (controller.isTherePodcast()){
+                        System.out.println(controller.podcastReproductions());
+                    }else System.out.println("No hay podcast registradas, por tanto no se puede realizar esta acción.");
+                    break;
+                default:
+                    System.out.println("La opción nc coincide con el menú.");
+            }
+        }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+
+        }
+    }
+
+    public static void topSellingSong(){
+
+        if (controller.isThereAudios() && controller.isThereSong()){
+
+            System.out.println(controller.topSellingSong());
+        }else{
+            if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
+            if (!controller.isThereSong()) System.out.println("No hay canciones registradas, por tanto no se puede realizar esta acción.");
         }
     }
 }

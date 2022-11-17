@@ -10,9 +10,62 @@ public class NeotunesController {
     private ArrayList<Audio> audios = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
+    //Stats
+
+    /**This method identify the top-selling song
+     * @return A String with the information of the top-selling song.
+     */
+    public String topSellingSong(){
+        Song temporal = null;
+        boolean isFistTime = true;
+        for(int i = 0; i < getAudios().size();i++ ){
+            if (getAudios().get(i) instanceof Song){
+                if (isFistTime){
+                    temporal = ((Song)getAudios().get(i));
+                    isFistTime = false;
+                }
+                if (temporal.getNumSales() < ((Song) getAudios().get(i)).getNumSales()) temporal = ((Song) getAudios().get(i));
+            }
+        }
+
+        return "Canción más vendida:  " + temporal.getName() + " | Ventas: " + temporal.getNumSales() + " | Ingresos: "
+                + temporal.getNumSales()* temporal.getPrice();
+    }
+
+
+    /**This method counts the quantity of songs reproductions.
+     * @return An intenger with the quantity of songs reproductions.
+     */
+    public String songsReproductions(){
+        int numReproductions = 0;
+        for(int i = 0; i< getAudios().size();i++){
+            if (getAudios().get(i) instanceof Song){
+                numReproductions += getAudios().get(i).getNumReproduction();
+            }
+
+        }
+
+        return "REPRODUCCIONES DE CANCIONES: " + numReproductions;
+    }
+
+    /**This method counts the quantity of podcast reproductions.
+     * @return An intenger with the quantity of podcast reproductions.
+     */
+    public String podcastReproductions(){
+        int numReproductions = 0;
+        for(int i = 0; i< getAudios().size();i++){
+            if (getAudios().get(i) instanceof Podcast){
+                numReproductions += getAudios().get(i).getNumReproduction();
+            }
+
+        }
+
+        return "REPRODUCCIONES DE PODCAST: " + numReproductions;
+    }
 
 
     //User registration
+
     /**
      * This method verifies if the id given by the user is unique.
      *
@@ -42,10 +95,10 @@ public class NeotunesController {
     }
 
 
-
     //Registration
 
-        //Register Users
+    //Register Users
+
     /**
      * This method creates and save an Artist object in the program .
      *
@@ -112,52 +165,58 @@ public class NeotunesController {
         return "Usuario registrado";
     }
 
-    /**This method receives the necessary information in order to create a Song object.
-     * @param name Storages the name of the song.
-     * @param urlCover Storages the url of the cover photo.
-     * @param duration Storages the duration of the song.
-     * @param author Storages the position of the song author.
-     * @param price Storages the price of the song.
-     * @param album Storages the name of the album related with the song.
+    /**
+     * This method receives the necessary information in order to create a Song object.
+     *
+     * @param name          Storages the name of the song.
+     * @param urlCover      Storages the url of the cover photo.
+     * @param duration      Storages the duration of the song.
+     * @param author        Storages the position of the song author.
+     * @param price         Storages the price of the song.
+     * @param album         Storages the name of the album related with the song.
      * @param genrePosition Storages the position of the genre related with the song.
      * @return Return  a string indicating that the song was created.
      */
 
-        //Register audios
-    public String registerSong (String name, String urlCover, String duration, int author, double price, String album, int genrePosition) {
+    //Register audios
+    public String registerSong(String name, String urlCover, String duration, int author, double price, String album, int genrePosition) {
 
-        Song song = new Song(name,urlCover,convertToSeconds(duration), (Artist) getUsers().get(author),price,album,Genre.values()[genrePosition]);
+        Song song = new Song(name, urlCover, convertToSeconds(duration), (Artist) getUsers().get(author), price, album, Genre.values()[genrePosition]);
         getAudios().add(song);
         return "Canción registrada";
     }
 
-    /**This method receives the necessary information in order to create a Podcast object.
-     * @param name Storages the name of the podcast.
-     * @param urlCover Storages the url of the cover photo.
-     * @param duration Storages the duration of the podcast.
-     * @param author Storages the position of the podcast author.
-     * @param description Storages the name of the album related with the podcast.
+    /**
+     * This method receives the necessary information in order to create a Podcast object.
+     *
+     * @param name             Storages the name of the podcast.
+     * @param urlCover         Storages the url of the cover photo.
+     * @param duration         Storages the duration of the podcast.
+     * @param author           Storages the position of the podcast author.
+     * @param description      Storages the name of the album related with the podcast.
      * @param categoryPosition Storages the position of the category related with the podcast.
      * @return Return a string indicating that the podcast was created.
      */
-    public String registerPodcast(String name, String urlCover, String duration, int author, String description, int categoryPosition){
+    public String registerPodcast(String name, String urlCover, String duration, int author, String description, int categoryPosition) {
 
-        Podcast podcast = new Podcast(name,urlCover,convertToSeconds(duration),(ContentCreator)getUsers().get(author),description,Category.values()[categoryPosition]);
+        Podcast podcast = new Podcast(name, urlCover, convertToSeconds(duration), (ContentCreator) getUsers().get(author), description, Category.values()[categoryPosition]);
         getAudios().add(podcast);
         return "Podcast Registrado";
     }
 
-        //Playlist Staff
+    //Playlist Staff
 
-    /**This method identifies the UserConsumer that will be uses to storages the new playlist that will be created.
-     * @param name Storages the playlist name
+    /**
+     * This method identifies the UserConsumer that will be uses to storages the new playlist that will be created.
+     *
+     * @param name         Storages the playlist name
      * @param userPosition Storages the user consumer postion
      * @return A String indicating if the playlist was added or not.
      */
 
-    public String createPlaylist(String name, int userPosition){
+    public String createPlaylist(String name, int userPosition) {
 
-        if (((UserConsumer) getUsers().get(userPosition)).addPlaylist(name)){
+        if (((UserConsumer) getUsers().get(userPosition)).addPlaylist(name)) {
             return "Playlist agregada";
         }
         return "No se pudo agregar la playlist";
@@ -165,104 +224,150 @@ public class NeotunesController {
 
     /**
      * This method is used to identify the user that want to share a playlist.
+     *
      * @param userIndex Storages the user index position.
-     * @param playlist Storages the playlist index position
+     * @param playlist  Storages the playlist index position
      * @return The code that will be used to share the playlist.
      */
-    public String sharePlaylist (int userIndex, int playlist){
-        return ((UserConsumer)getUsers().get(userIndex)).sharePlaylist(playlist);
+    public String sharePlaylist(int userIndex, int playlist) {
+        return ((UserConsumer) getUsers().get(userIndex)).sharePlaylist(playlist);
     }
 
-    /**This method is used to identify the user and audio selected in order to add an audio to a playlist of the user identified.
-     * @param audioIndex Storages the index position of the audio that will be added.
-     * @param userIndex Storages the user index positin of the user consumer that has the playlist.
+    /**
+     * This method is used to identify the user and audio selected in order to add an audio to a playlist of the user identified.
+     *
+     * @param audioIndex    Storages the index position of the audio that will be added.
+     * @param userIndex     Storages the user index positin of the user consumer that has the playlist.
      * @param playlistIndex Storages the index position of the user playlist that will be used to save the audio.
      * @return Return true if the audio was suscesfully added,  otherwise,  returns false.
      */
-    public boolean addAudio(int audioIndex, int userIndex, int playlistIndex){
-        return ((UserConsumer)getUsers().get(userIndex)).addAudio(getAudios().get(audioIndex),playlistIndex );
+    public boolean addAudio(int audioIndex, int userIndex, int playlistIndex) {
+        return ((UserConsumer) getUsers().get(userIndex)).addAudio(getAudios().get(audioIndex), playlistIndex);
     }
-    /**This method is used to identify the user selected in order to delete an audio to a playlist of the user identified.
-     * @param audioIndex Storages the index position of the audio that will be deleted.
-     * @param userIndex Storages the user index positin of the user consumer that has the playlist.
+
+    /**
+     * This method is used to identify the user selected in order to delete an audio to a playlist of the user identified.
+     *
+     * @param audioIndex    Storages the index position of the audio that will be deleted.
+     * @param userIndex     Storages the user index positin of the user consumer that has the playlist.
      * @param playlistIndex Storages the index position of the user playlist that will be used to delete the audio.
      * @return Return true if the audio was suscesfully deleted,  otherwise,  returns false.
      */
-    public boolean deleteAudio(int audioIndex, int userIndex, int playlistIndex){
-        return ((UserConsumer)getUsers().get(userIndex)).deleteAudio(playlistIndex,audioIndex);
+    public boolean deleteAudio(int audioIndex, int userIndex, int playlistIndex) {
+        return ((UserConsumer) getUsers().get(userIndex)).deleteAudio(playlistIndex, audioIndex);
     }
-    /**This method is used to identify the user and audio selected in order reproduce an audio.
+
+    /**
+     * This method is used to identify the user and audio selected in order reproduce an audio.
+     *
      * @param audioPosition Storages the index position of the audio that will be reproduced.
-     * @param userPosition Storages the user index positin of the user consumer that want to reproduce an audio.
+     * @param userPosition  Storages the user index positin of the user consumer that want to reproduce an audio.
      * @return Returns a string simulating the reproduction of an audio.
      */
-    public String reproduceAudio(int userPosition, int audioPosition){
+    public String reproduceAudio(int userPosition, int audioPosition) {
         String message = "";
         message += getAudios().get(audioPosition).reproduce();
-        message += ((UserConsumer)getUsers().get(userPosition)).reproduceAudio(getAudios().get(audioPosition));
+        message += ((UserConsumer) getUsers().get(userPosition)).reproduceAudio(getAudios().get(audioPosition));
         return message;
     }
-    /**This method is used to identify the user and the sellable selected in order make a purchase.
+
+    /**
+     * This method is used to identify the user and the sellable selected in order make a purchase.
+     *
      * @param sellablePosition Storages the index position of the Sellable that will be sold.
-     * @param userPosition Storages the user index positin of the user consumer that want to purchase a Sellable.
+     * @param userPosition     Storages the user index positin of the user consumer that want to purchase a Sellable.
      * @return Returns true when the purchase was done, otherwise, returns false.
      */
-    public boolean purchaseSellable(int userPosition, int sellablePosition){
+    public boolean purchaseSellable(int userPosition, int sellablePosition) {
 
-        return (((UserConsumer)getUsers().get(userPosition)).purchaseSellable((Sellable) getAudios().get(sellablePosition)));
+        return (((UserConsumer) getUsers().get(userPosition)).purchaseSellable((Sellable) getAudios().get(sellablePosition)));
 
     }
 
     // Isthere
 
-        // User
+    // User
 
-    /**This method verifies if there are Artist already registered.
+    /**
+     * This method verifies if there are Artist already registered.
+     *
      * @return Returns true if exist at least one Artist, otherwise, return false.
      */
-    public boolean isThereArtist(){
-        for (int i = 0; i< getUsers().size();i++){
+    public boolean isThereArtist() {
+        for (int i = 0; i < getUsers().size(); i++) {
             if (getUsers().get(i) instanceof Artist) return true;
         }
         return false;
     }
 
-    /**This method verifies if there are ContentsCreators already registered.
+    /**
+     * This method verifies if there are ContentsCreators already registered.
+     *
      * @return Returns true if exist at least one Artist, otherwise, return false.
      */
-    public boolean isThereContentCreators(){
-        for (int i = 0; i< getUsers().size();i++){
+    public boolean isThereContentCreators() {
+        for (int i = 0; i < getUsers().size(); i++) {
             if (getUsers().get(i) instanceof ContentCreator) return true;
         }
         return false;
     }
 
-    /**This method verifies if there are UserConsumers already registered.
+    /**
+     * This method verifies if there are UserConsumers already registered.
+     *
      * @return Returns true if exist at least one UserConsumer, otherwise, return false.
      */
-    public boolean isThereConsumers(){
+    public boolean isThereConsumers() {
 
-        for(int i = 0; i< users.size();i++){
+        for (int i = 0; i < users.size(); i++) {
             if (users.get(i) instanceof UserConsumer) return true;
         }
         return false;
     }
 
-            // Audios
-    /**This method is used to identify the user that will be used to check if there is audios in a specific playlist of him.
+    // Audios
+
+    /**
+     * This method is used to identify the user that will be used to check if there is audios in a specific playlist of him.
+     *
      * @return Returns true if exist at least one Audio in the selected playlist, otherwise, return false.
      */
-    public boolean isThereAudiosInPlaylist(int userPosition, int playlistPosition){
-        return ((UserConsumer)getUsers().get(userPosition)).isThereAudiosInPlaylist(playlistPosition);
+    public boolean isThereAudiosInPlaylist(int userPosition, int playlistPosition) {
+        return ((UserConsumer) getUsers().get(userPosition)).isThereAudiosInPlaylist(playlistPosition);
     }
 
-    /**This method verifies if there are Audios already registered.
+    /**
+     * This method verifies if there are Audios already registered.
+     *
      * @return Returns true if exist at least one Audio, otherwise, return false.
      */
-    public boolean isThereAudios(){
-        if (getAudios().size()>0) return true;
+    public boolean isThereAudios() {
+        if (getAudios().size() > 0) return true;
         return false;
     }
+
+    /**This method verifies if there are Songs objects already registered.
+     * @return Returns true if exist at least one Song object, otherwise, return false.
+     */
+    public boolean isThereSong(){
+        for(int i = 0; i< getAudios().size();i++){
+            if (getAudios().get(i) instanceof Song) return true;
+
+        }
+        return false;
+    }
+
+    /**This method verifies if there are Podcast objects already registered.
+     * @return Returns true if exist at least one Podcast object, otherwise, return false.
+     */
+    public boolean isTherePodcast(){
+        for(int i = 0; i< getAudios().size();i++){
+            if (getAudios().get(i) instanceof Podcast) return true;
+        }
+        return false;
+    }
+
+
     /**This method verifies if there are Sellables objects already registered.
      * @return Returns true if exist at least one Sellable object, otherwise, return false.
      */

@@ -20,6 +20,7 @@ public class Podcast extends Audio{
     public String reproduce() {
         this.getAuthor().setNumReproduction(getAuthor().getNumReproduction()+1);
         this.getAuthor().setTimeReproduced(getAuthor().getTimeReproduced()+ this.getDuration());
+        this.setNumReproduction(getNumReproduction() +1);
         return "Reproduciendo: " + this.getName() + " Duracion: " + this.durationFormat() + " - " + this.getAuthor().getName() +"\n";
 
     }

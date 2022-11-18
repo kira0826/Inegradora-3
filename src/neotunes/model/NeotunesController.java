@@ -10,11 +10,81 @@ public class NeotunesController {
     private ArrayList<Audio> audios = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
+    //Stats
+
+    /**This method identifies and reports the top 10  podcasts with the highest number of plays. In case there are less than 5
+     * podcast identified, the size of the top is adjusted to the number of objects.
+     * @return A String with the report of the top podcast.
+     */
+    public String top10Podcast(){
+
+        ArrayList<Podcast> temporalTop = new ArrayList<>();
+
+        for (int i = 0; i < getAudios().size(); i++) {
+            if (getAudios().get(i) instanceof Podcast){
+                temporalTop.add((Podcast) getAudios().get(i));
+            }
+        }
+        Podcast temporalSong;
+
+        for (int i = 0; i< temporalTop.size();i++){
+            for (int j = i; j< temporalTop.size();j++){
+                if (temporalTop.get(i).getNumReproduction() < temporalTop.get(j).getNumReproduction()){
+                    temporalSong = temporalTop.get(i);
+                    temporalTop.set(i,temporalTop.get(j));
+                    temporalTop.set(j,temporalSong);
+                }
+            }
+        }
+
+        String message= "Podcast: \n";
+
+        for (int i = 0; i< temporalTop.size();i++){
+            if (i <= 10){
+                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() +" | Género: " + temporalTop.get(i).getCategory()+ ". \n";
+            }else break;
+        }
+        return message;
+    }
+    /**This method identifies and reports the top 10  songs with the highest number of plays. In case there are less than 5
+     * songs identified, the size of the top is adjusted to the number of objects.
+     * @return A String with the report of the top songs.
+     */
+    public String top10Songs(){
+
+        ArrayList<Song> temporalTop = new ArrayList<>();
+
+        for (int i = 0; i < getAudios().size(); i++) {
+            if (getAudios().get(i) instanceof Song){
+                temporalTop.add((Song) getAudios().get(i));
+            }
+        }
+        Song temporalSong;
+
+        for (int i = 0; i< temporalTop.size();i++){
+            for (int j = i; j< temporalTop.size();j++){
+                if (temporalTop.get(i).getNumReproduction() < temporalTop.get(j).getNumReproduction()){
+                    temporalSong = temporalTop.get(i);
+                    temporalTop.set(i,temporalTop.get(j));
+                    temporalTop.set(j,temporalSong);
+                }
+            }
+        }
+
+        String message= "Canciones: \n";
+
+        for (int i = 0; i< temporalTop.size();i++){
+            if (i <= 10){
+                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() +" | Género: " + temporalTop.get(i).getGenre()+ ". \n";
+            }else break;
+        }
+        return message;
+    }
+
     /**This method identifies and reports the top 5  content creators with the highest number of plays. In case there are less than 5
      * users identified, the size of the top is adjusted to the number of objects.
      * @return A String with the report of the top Content Creators.
      */
-    //Stats
     public String top5ContentCreator(){
 
         ArrayList<ContentCreator> temporalTop = new ArrayList<>();
@@ -39,7 +109,7 @@ public class NeotunesController {
 
         for (int i = 0; i< temporalTop.size();i++){
             if (i <= 5){
-                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() + ". \n ";
+                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() + ". \n";
             }else break;
         }
         return message;

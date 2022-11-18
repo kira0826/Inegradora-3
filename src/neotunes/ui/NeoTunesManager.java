@@ -65,6 +65,9 @@ public class NeoTunesManager {
                 case "15":
                     top5UserProducer();
                     break;
+                case "16":
+                    top10Audios();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -108,6 +111,7 @@ public class NeoTunesManager {
                 13. Género favorito de canciones.
                 14. Categoría favorita de podcast.
                 15. Top 5 usuarios productores.
+                16. Top 10 audios.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -387,7 +391,7 @@ public class NeoTunesManager {
      */
     public static void purchaseSellable(){
         if (controller.isThereConsumers() && controller.isThereSellables()){
-            System.out.println("Por favor escoje el usuario que desea simular la reproducción de un audio");
+            System.out.println("Por favor escoje el usuario que desea comprar un vendible");
             System.out.println(controller.getUserConsumerInfo());
             int userIndex = Integer.parseInt(scanner.nextLine());
             System.out.println("Por favor escribe el número del vendible que deseas comprar.");
@@ -523,5 +527,24 @@ public class NeoTunesManager {
                     }else System.out.println("No hay creadores de contenido registrados por tanto no se puede realizar esta operación.");
                     break;
             }
+    }
+
+    public static void top10Audios(){
+
+        System.out.println("Escriba 1 si desea saber el top de canciones, escriba 2 si desea saber el top de podcast.");
+        String selection = scanner.nextLine();
+
+        switch (selection){
+            case "1":
+                if (controller.isThereSong()) {
+                    System.out.println(controller.top10Songs());
+                }else System.out.println("No hay canciones registradas por tanto no se puede realizar esta operación.");
+                break;
+            case "2":
+                if (controller.isTherePodcast()) {
+                    System.out.println(controller.top10Podcast());
+                }else System.out.println("No hay podcast registradas por tanto no se puede realizar esta operación.");
+                break;
+        }
     }
 }

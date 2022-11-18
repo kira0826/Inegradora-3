@@ -10,7 +10,77 @@ public class NeotunesController {
     private ArrayList<Audio> audios = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
 
+    /**This method identifies and reports the top 5  content creators with the highest number of plays. In case there are less than 5
+     * users identified, the size of the top is adjusted to the number of objects.
+     * @return A String with the report of the top Content Creators.
+     */
     //Stats
+    public String top5ContentCreator(){
+
+        ArrayList<ContentCreator> temporalTop = new ArrayList<>();
+
+        for (int i = 0; i < getUsers().size(); i++) {
+            if (getUsers().get(i) instanceof ContentCreator){
+                temporalTop.add((ContentCreator) getUsers().get(i));
+            }
+        }
+        ContentCreator temporalContentCreator;
+        for (int i = 0; i< temporalTop.size();i++){
+            for (int j = i; j< temporalTop.size();j++){
+                if (temporalTop.get(i).getNumReproduction() < temporalTop.get(j).getNumReproduction()){
+                    temporalContentCreator = temporalTop.get(i);
+                    temporalTop.set(i,temporalTop.get(j));
+                    temporalTop.set(j,temporalContentCreator);
+                }
+            }
+        }
+
+        String message= "Creadores de contenido: \n";
+
+        for (int i = 0; i< temporalTop.size();i++){
+            if (i <= 5){
+                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() + ". \n ";
+            }else break;
+        }
+        return message;
+    }
+
+    /**This method identifies and reports the top 5  artist with the highest number of plays. In case there are less than 5
+     * users identified, the size of the top is adjusted to the number of objects.
+     * @return A String with the report of the top artists.
+     */
+    public String top5Artist(){
+
+        ArrayList<Artist> temporalTop = new ArrayList<>();
+
+        for (int i = 0; i < getUsers().size(); i++) {
+            if (getUsers().get(i) instanceof Artist){
+                temporalTop.add((Artist) getUsers().get(i));
+            }
+        }
+        Artist temporalArtist;
+        for (int i = 0; i< temporalTop.size();i++){
+            for (int j = i; j< temporalTop.size();j++){
+                if (temporalTop.get(i).getNumReproduction() < temporalTop.get(j).getNumReproduction()){
+                    temporalArtist = temporalTop.get(i);
+                    temporalTop.set(i,temporalTop.get(j));
+                    temporalTop.set(j,temporalArtist);
+                }
+            }
+        }
+
+        String message= "Artistas: \n";
+
+        for (int i = 0; i< temporalTop.size();i++){
+            if (i <= 5){
+                message += i +".) " + temporalTop.get(i).getName() +" | Reproducciones: " + temporalTop.get(i).getNumReproduction() + ". \n";
+            }else break;
+        }
+        return message;
+    }
+
+
+
     /**This method identifies the favorite podcast category of the global program.
      * @return If there is at least one podcast reproduced, returns a string with the information of the favorite category, otherwise
      * return a string indicating that there are not songs.

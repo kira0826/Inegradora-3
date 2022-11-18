@@ -62,6 +62,9 @@ public class NeoTunesManager {
                 case"14":
                     favoritePodcastCategory();
                     break;
+                case "15":
+                    top5UserProducer();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -104,6 +107,7 @@ public class NeoTunesManager {
                 12. Canción más vendida
                 13. Género favorito de canciones.
                 14. Categoría favorita de podcast.
+                15. Top 5 usuarios productores.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -497,5 +501,27 @@ public class NeoTunesManager {
             if (!controller.isThereAudios()) System.out.println("No hay audios registrados por tanto no se puede realizar esta acción.");
             if (!controller.isTherePodcast()) System.out.println("No hay podcasts registrados, por tanto no se puede realizar esta acción.");
         }
+    }
+    /**
+     * This method is used to identify which operation must the system do: identify and inform the top 5 artist of the program,
+     * or the top 5 content creator of the program.
+     */
+    public static void top5UserProducer(){
+
+            System.out.println("Escriba 1 si desea saber el top artistas, escriba 2 si desea saber el top creadores de contenido.");
+            String selection = scanner.nextLine();
+
+            switch (selection){
+                case "1":
+                    if (controller.isThereArtist()) {
+                        System.out.println(controller.top5Artist());
+                    }else System.out.println("No hay artistas registrados por tanto no se puede realizar esta operación.");
+                    break;
+                case "2":
+                    if (controller.isThereContentCreators()) {
+                        System.out.println(controller.top5ContentCreator());
+                    }else System.out.println("No hay creadores de contenido registrados por tanto no se puede realizar esta operación.");
+                    break;
+            }
     }
 }

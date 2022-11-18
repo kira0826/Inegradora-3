@@ -68,6 +68,9 @@ public class NeoTunesManager {
                 case "16":
                     top10Audios();
                     break;
+                case "17":
+                    incomesByGenre();
+                    break;
                 case "0":
                     continueOnLoop = false;
                     System.out.println("Hasta luego usuario.");
@@ -112,6 +115,7 @@ public class NeoTunesManager {
                 14. Categoría favorita de podcast.
                 15. Top 5 usuarios productores.
                 16. Top 10 audios.
+                17. Ingresos por género de canción.
                 0. Salir del pograma.""";
         System.out.println(menu);
     }
@@ -528,6 +532,10 @@ public class NeoTunesManager {
                     break;
             }
     }
+    /**
+     * This method is used to identify which operation must the system do: identify and inform the top 10 most reproduced songs of the program,
+     * or the top 10 most reproduced podcast of the program.
+     */
 
     public static void top10Audios(){
 
@@ -546,5 +554,9 @@ public class NeoTunesManager {
                 }else System.out.println("No hay podcast registradas por tanto no se puede realizar esta operación.");
                 break;
         }
+    }
+
+    public static void incomesByGenre(){
+        System.out.println(controller.incomesByGenre());
     }
 }

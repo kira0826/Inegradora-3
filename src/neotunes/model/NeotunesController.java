@@ -11,6 +11,44 @@ public class NeotunesController {
     private ArrayList<User> users = new ArrayList<>();
 
     //Stats
+    /**
+     * This method accounts for the revenue and number of sales given for each genre of songs.
+     * @return If there is at least one song reproduced, returns a report  with revenues and songs sold by genre, otherwise
+     * return a string indicating that there are not songs.
+     */
+    public String incomesByGenre(){
+
+        if (isThereSong()){
+
+            int counterSales [] = new int[Genre.values().length];
+            double incomes[]  = new double[Genre.values().length];
+            //Fill process
+            for (int i = 0; i < counterSales.length; i++) {
+                counterSales[i] = 0;
+                incomes[i] = 0;
+            }
+            // Count process
+            for (int  i  =0 ; i < Genre.values().length;i++){
+                for (int j = 0; j< getAudios().size(); j++) {
+                    if (getAudios().get(j) instanceof Song){
+                        if (((Song) getAudios().get(j)).getGenre().equals(Genre.values()[i])){
+                            counterSales[i] = counterSales[i] + ((Song) getAudios().get(j)).getNumSales();
+                            incomes[i] = incomes[i] + ((Song) getAudios().get(j)).getNumSales() * ((Song) getAudios().get(j)).getPrice();
+                        }
+                    }
+                }
+            }
+            // Message process
+            String message = "Géneros de canciones: \n";
+
+            for (int i = 0; i < Genre.values().length; i++) {
+                    message += i+".) " + Genre.values()[i].toString() + " | Ventas: " + counterSales[i] + " | Ingresos: " + incomes[i] +"\n";
+            }
+
+            return message;
+        }
+        return "No hay canciones.";
+    }
 
     /**This method identifies and reports the top 10  podcasts with the highest number of plays. In case there are less than 5
      * podcast identified, the size of the top is adjusted to the number of objects.

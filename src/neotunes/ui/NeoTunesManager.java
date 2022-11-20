@@ -555,6 +555,9 @@ public class NeoTunesManager {
         }
     }
 
+    /**
+     * This method contains the method that calculate the incomes by genre.
+     */
     public static void incomesByGenre(){
         System.out.println(controller.incomesByGenre());
     }

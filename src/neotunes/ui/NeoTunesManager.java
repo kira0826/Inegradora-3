@@ -96,27 +96,26 @@ public class NeoTunesManager {
      * This method storages and display the structure of the program menu.
      */
     public static void displayMenu(){
-        String menu = """
-                Bienvenido usuario,  por favor escriba el número que correponde con la operación que desea realizar:
-                
-                1. Registrar usuario productor.
-                2. Registrar usuario consumidor.
-                3. Registrar canción.
-                4. Registrar podcast.
-                5. Crear lista de reproducción.
-                6. Añadir audio a una playlist.
-                7. Eliminar audio de una playlist.
-                8. Compartir una playlist.
-                9. Simular reproducción.
-                10. Comprar canción.
-                11. Calcular el total de reproducciones de un tipo de audio. 
-                12. Canción más vendida
-                13. Género favorito de canciones.
-                14. Categoría favorita de podcast.
-                15. Top 5 usuarios productores.
-                16. Top 10 audios.
-                17. Ingresos por género de canción.
-                0. Salir del pograma.""";
+        String menu = "Bienvenido usuario,  por favor escriba el número que correponde con la operación que desea realizar:\n" +
+                      "\n" +
+                      "1. Registrar usuario productor.\n" +
+                      "2. Registrar usuario consumidor.\n" +
+                      "3. Registrar canción.\n" +
+                      "4. Registrar podcast.\n" +
+                      "5. Crear lista de reproducción.\n" +
+                      "6. Añadir audio a una playlist.\n" +
+                      "7. Eliminar audio de una playlist.\n" +
+                      "8. Compartir una playlist.\n" +
+                      "9. Simular reproducción.\n" +
+                      "10. Comprar canción.\n" +
+                      "11. Calcular el total de reproducciones de un tipo de audio.\n" +
+                      "12. Canción más vendida\n" +
+                      "13. Género favorito de canciones.\n" +
+                      "14. Categoría favorita de podcast.\n" +
+                      "15. Top 5 usuarios productores.\n" +
+                      "16. Top 10 audios.\n" +
+                      "17. Ingresos por género de canción.\n" +
+                      "0. Salir del pograma.";
         System.out.println(menu);
     }
 
